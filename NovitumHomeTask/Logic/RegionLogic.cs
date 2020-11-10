@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NovitumHomeTask.DataAccess;
 using NovitumHomeTask.Model;
 
 namespace NovitumHomeTask.Logic
 {
     public class RegionLogic : IRegionLogic
     {
+        private readonly IRegionRepository _repository;
+
+        public RegionLogic(IRegionRepository repository)
+        {
+            _repository = repository;
+        }
+
         /// <summary>
         /// Filters Novads list
         /// </summary>

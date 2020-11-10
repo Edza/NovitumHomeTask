@@ -17,50 +17,44 @@ namespace NovitumHomeTask.DataAccess
     {
         private readonly IServiceScope _scope;
         private readonly RegionDatabaseContext _databaseContext;
+        private readonly string _dataFilePath; // Path to csv and kml files
 
         public RegionRepository(IServiceProvider services)
         {
             _scope = services.CreateScope();
             _databaseContext = _scope.ServiceProvider.GetRequiredService<RegionDatabaseContext>();
+            _dataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "") + "Data\\";
 
-            this.CreateModelFromDisk();
+            this.CreateModelFromDiskAsync();
         }
 
         /// <summary>
         /// Creates database model by import from disk
         /// </summary>
-        public void CreateModelFromDisk()
+        private void CreateModelFromDiskAsync()
         {
             var polygonInfos = new List<Polygon1kmInfo>();
             var novadsPagastsMapping = new List<NovadsPagasts>();
             var pagastsPolygon1kmMapping = new List<PagastsPolygon1km>();
 
-            using (var reader = new StreamReader(@"1km_filtri.csv"))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                csv.Configuration.RegisterClassMap<Polygon1kmInfoClassMap>();
-                polygonInfos = csv.GetRecords<Polygon1kmInfo>().ToList();
-            }
-
-            using (var reader = new StreamReader(@"nov_pag_mappings.csv"))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                csv.Configuration.RegisterClassMap<NovadsPagastsClassMap>();
-                novadsPagastsMapping = csv.GetRecords<NovadsPagasts>().ToList();
-            }
-
-            using (var reader = new StreamReader(@"pagasta_km_mappings.csv"))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                csv.Configuration.RegisterClassMap<PagastsPolygon1kmClassMap>();
-                pagastsPolygon1kmMapping = csv.GetRecords<PagastsPolygon1km>().ToList();
-            }
+            this.ExtractCsvFiles(out polygonInfos, out novadsPagastsMapping, out pagastsPolygon1kmMapping);
 
             var polygons1km = new List<Polygon1km>();
             var novadsList = new List<Novads>();
             var pagastsList = new List<Pagasts>();
 
-            using (var reader = new StreamReader(@"1km_lv.kml"))
+            this.ExtractKmlFilesAndBuildModel(polygonInfos, novadsPagastsMapping, pagastsPolygon1kmMapping, polygons1km, novadsList, pagastsList);
+
+            _databaseContext.NovadsList.AddRange(novadsList);
+            _databaseContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Extracts KML files
+        /// </summary>
+        private void ExtractKmlFilesAndBuildModel(List<Polygon1kmInfo> polygonInfos, List<NovadsPagasts> novadsPagastsMapping, List<PagastsPolygon1km> pagastsPolygon1kmMapping, List<Polygon1km> polygons1km, List<Novads> novadsList, List<Pagasts> pagastsList)
+        {
+            using (var reader = new StreamReader(_dataFilePath + "1km_lv.kml"))
             {
                 KmlFile file = KmlFile.Load(reader);
 
@@ -84,7 +78,7 @@ namespace NovitumHomeTask.DataAccess
                 }
             }
 
-            using (var reader = new StreamReader(@"pagasti_pol.kml"))
+            using (var reader = new StreamReader(_dataFilePath + "pagasti_pol.kml"))
             {
                 KmlFile file = KmlFile.Load(reader);
 
@@ -109,7 +103,7 @@ namespace NovitumHomeTask.DataAccess
                 }
             }
 
-            using (var reader = new StreamReader(@"novadi_pol.kml"))
+            using (var reader = new StreamReader(_dataFilePath + "novadi_pol.kml"))
             {
                 KmlFile file = KmlFile.Load(reader);
 
@@ -134,7 +128,33 @@ namespace NovitumHomeTask.DataAccess
                     }
                 }
             }
+        }
 
+        /// <summary>
+        /// Extracts data from .csv fails
+        /// </summary>
+        private void ExtractCsvFiles(out List<Polygon1kmInfo> polygonInfos, out List<NovadsPagasts> novadsPagastsMapping, out List<PagastsPolygon1km> pagastsPolygon1kmMapping)
+        {
+            using (var reader = new StreamReader(_dataFilePath + "1km_filtri.csv"))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                csv.Configuration.RegisterClassMap<Polygon1kmInfoClassMap>();
+                polygonInfos = csv.GetRecords<Polygon1kmInfo>().ToList();
+            }
+
+            using (var reader = new StreamReader(_dataFilePath + "nov_pag_mappings.csv"))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                csv.Configuration.RegisterClassMap<NovadsPagastsClassMap>();
+                novadsPagastsMapping = csv.GetRecords<NovadsPagasts>().ToList();
+            }
+
+            using (var reader = new StreamReader(_dataFilePath + "pagasta_km_mappings.csv"))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                csv.Configuration.RegisterClassMap<PagastsPolygon1kmClassMap>();
+                pagastsPolygon1kmMapping = csv.GetRecords<PagastsPolygon1km>().ToList();
+            }
         }
     }
 }

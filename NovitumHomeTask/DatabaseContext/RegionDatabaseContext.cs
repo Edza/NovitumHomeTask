@@ -17,24 +17,10 @@ namespace EasyCruitChallenge.DatabaseContext
         /// </summary>
         public DbSet<Novads> NovadsList { get; set; }
 
-        /// <summary>
-        /// List of pagasts in our in-memory databse.
-        /// </summary>
-        public DbSet<Pagasts> PagastsList { get; set; }
-
-        /// <summary>
-        /// List of polygon1km in our in-memory databse.
-        /// </summary>
-        public DbSet<Polygon1km> Polygon1kmList { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Let's set primary key.
             modelBuilder.Entity<Novads>()
-                .HasKey(x => x.Id);
-            modelBuilder.Entity<Pagasts>()
-                .HasKey(x => x.Id);
-            modelBuilder.Entity<Polygon1km>()
                 .HasKey(x => x.Id);
         }
     }

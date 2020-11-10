@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using SharpKml.Dom;
 
 namespace NovitumHomeTask.Model
 {
@@ -13,6 +16,7 @@ namespace NovitumHomeTask.Model
         /// <summary>
         /// Region id
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
@@ -23,7 +27,11 @@ namespace NovitumHomeTask.Model
         /// <summary>
         /// Region bounding coordinates
         /// </summary>
-        public object CoordinatesPolygon { get; set; }
+        /// <remarks>
+        /// Not mapped as we would need to create a deeper structure with set Id keys for EF.
+        /// </remarks>
+        [NotMapped]
+        public Geometry CoordinatesPolygon { get; set; }
 
         /// <summary>
         /// Lists of Pagasts inside this region

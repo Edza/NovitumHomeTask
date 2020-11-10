@@ -11,7 +11,7 @@ using NovitumHomeTask.Model;
 namespace NovitumHomeTask.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/")]
     public class RegionController : ControllerBase
     {
         private readonly IRegionLogic _regionLogic;
