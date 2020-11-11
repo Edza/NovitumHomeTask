@@ -7,7 +7,6 @@ namespace NovitumHomeTask.Tests.Controllers
     using NovitumHomeTask.Model;
     using Moq;
     using System.Collections.Generic;
-    using System.Web.Http.Results;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
 
