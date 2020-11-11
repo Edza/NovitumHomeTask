@@ -25,6 +25,44 @@ namespace NovitumHomeTask.Model
         public string Name { get; set; }
 
         /// <summary>
+        /// List of 1km polygons inside this Pagasts
+        /// </summary>
+        public List<Polygon1km> Polygon1kmList { get; set; }
+
+        /// <summary>
+        /// Sum of all population in this region
+        /// </summary>
+        public int SumTotalPopulation
+        {
+            get
+            {
+                return this.Polygon1kmList.Sum(poly => poly.Info.TotalPopulation);
+            }
+        }
+
+        /// <summary>
+        /// Sum of all clients in this region
+        /// </summary>
+        public int SumTotalClients
+        {
+            get
+            {
+                return this.Polygon1kmList.Sum(poly => poly.Info.Clients);
+            }
+        }
+
+        /// <summary>
+        /// Sum of all population in this region
+        /// </summary>
+        public int SumTotalPotential
+        { 
+            get
+            {
+                return this.Polygon1kmList.Sum(poly => poly.Info.Potential);
+            }
+        }
+
+        /// <summary>
         /// Region bounding coordinates
         /// </summary>
         /// <remarks>
@@ -32,12 +70,5 @@ namespace NovitumHomeTask.Model
         /// </remarks>
         [NotMapped]
         public Geometry CoordinatesPolygon { get; set; }
-
-        /// <summary>
-        /// List of 1km polygons inside this Pagasts
-        /// </summary>
-        public List<Polygon1km> Polygon1kmList { get; set; }
-
-        // Kopsummu lauki: km_total_iedzivotaji, Clients, Potential
     }
 }

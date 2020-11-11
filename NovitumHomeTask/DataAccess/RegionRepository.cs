@@ -25,13 +25,20 @@ namespace NovitumHomeTask.DataAccess
             _databaseContext = _scope.ServiceProvider.GetRequiredService<RegionDatabaseContext>();
             _dataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "") + "Data\\";
 
-            this.CreateModelFromDiskAsync();
+            this.CreateModelFromDisk();
+        }
+
+        /// <summary>
+        /// Gets all Novads from the database
+        public List<Novads> GetAllNovads()
+        {
+            return _databaseContext.NovadsList.ToList();
         }
 
         /// <summary>
         /// Creates database model by import from disk
         /// </summary>
-        private void CreateModelFromDiskAsync()
+        private void CreateModelFromDisk()
         {
             var polygonInfos = new List<Polygon1kmInfo>();
             var novadsPagastsMapping = new List<NovadsPagasts>();

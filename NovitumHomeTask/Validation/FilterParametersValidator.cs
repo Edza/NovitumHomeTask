@@ -8,9 +8,9 @@ namespace EasyCruitChallenge.Validation
     {
         public FilterParametersValidator()
         {
-            RuleFor(m => m.ClientsMin).GreaterThanOrEqualTo(0).WithMessage("Can't be negative client count minimum.");
-            RuleFor(m => m.PotentialMin).GreaterThanOrEqualTo(0).WithMessage("Can't be negative potential minimum.");
-            RuleFor(m => m.TotalPopulationMin).GreaterThanOrEqualTo(0).WithMessage("Can't be negative total population minimum.");
+            RuleFor(m => m.ClientsMin).Must(val => val == null || val > 0).WithMessage("Can't be negative client count minimum.");
+            RuleFor(m => m.PotentialMin).Must(val => val == null || val > 0).WithMessage("Can't be negative potential minimum.");
+            RuleFor(m => m.TotalPopulationMin).Must(val => val == null || val > 0).WithMessage("Can't be negative total population minimum.");
 
             // Here we could also rewrite Low, Mid, High to an enum and add enum validation (would do so in real world project)
         }

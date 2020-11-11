@@ -15,7 +15,17 @@ namespace NovitumHomeTask.Model
         /// <summary>
         /// Total population minimum
         /// </summary>
-        public int TotalPopulationMin { get; set; }
+        public int? TotalPopulationMin { get; set; }
+
+        /// <summary>
+        /// Clients minimum
+        /// </summary>
+        public int? ClientsMin { get; set; }
+
+        /// <summary>
+        /// Potential minimum
+        /// </summary>
+        public int? PotentialMin { get; set; }
 
         /// <summary>
         /// Male density
@@ -36,16 +46,6 @@ namespace NovitumHomeTask.Model
         /// Elderly density
         /// </summary>
         public string ElderlyDensity { get; set; }
-
-        /// <summary>
-        /// Clients minimum
-        /// </summary>
-        public int ClientsMin { get; set; }
-
-        /// <summary>
-        /// Potential minimum
-        /// </summary>
-        public int PotentialMin { get; set; }
 
         /// <summary>
         /// Penetration
