@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 using SharpKml.Dom;
 
 namespace NovitumHomeTask.Model
@@ -11,6 +11,7 @@ namespace NovitumHomeTask.Model
     /// <summary>
     /// Region of Novads
     /// </summary>
+    [Serializable]
     public class Novads
     {
         /// <summary>
@@ -69,6 +70,8 @@ namespace NovitumHomeTask.Model
         /// Not mapped as we would need to create a deeper structure with set Id keys for EF.
         /// </remarks>
         [NotMapped]
+        [JsonIgnore]
+        [field:NonSerialized]
         public Geometry CoordinatesPolygon { get; set; }
     }
 }

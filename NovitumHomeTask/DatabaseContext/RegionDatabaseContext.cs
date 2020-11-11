@@ -10,7 +10,10 @@ namespace EasyCruitChallenge.DatabaseContext
     {
         public RegionDatabaseContext(
             DbContextOptions<RegionDatabaseContext> dbContextOptions)
-            : base(dbContextOptions) { }
+            : base(dbContextOptions) {
+            this.ChangeTracker.LazyLoadingEnabled = false;
+            //this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;
+        }
 
         /// <summary>
         /// List of novads in our in-memory databse.

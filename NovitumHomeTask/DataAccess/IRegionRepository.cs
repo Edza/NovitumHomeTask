@@ -9,7 +9,7 @@ namespace NovitumHomeTask.DataAccess
     public interface IRegionRepository
     {
         /// <summary>
-        /// Gets all Novads from the database
-        public List<Novads> GetAllNovads();
+        /// Gets all Novads from the database in fully loaded read only mode
+        public List<Novads> GetAllNovadsLoadedReadOnly();
     }
 }

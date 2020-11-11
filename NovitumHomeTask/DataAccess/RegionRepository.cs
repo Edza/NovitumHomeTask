@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using CsvHelper;
 using EasyCruitChallenge.DatabaseContext;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NovitumHomeTask.Model;
 using SharpKml.Dom;
@@ -29,10 +31,25 @@ namespace NovitumHomeTask.DataAccess
         }
 
         /// <summary>
-        /// Gets all Novads from the database
-        public List<Novads> GetAllNovads()
+        /// Gets all Novads from the database in fully loaded read only mode
+        public List<Novads> GetAllNovadsLoadedReadOnly()
         {
-            return _databaseContext.NovadsList.ToList();
+            return this.DeepClone(_databaseContext.NovadsList.ToList());
+        }
+
+        /// <summary>
+        /// Deep clones object
+        /// </summary>
+        private T DeepClone<T>(T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
+            }
         }
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace NovitumHomeTask.Logic
         /// </summary>
         public IEnumerable<Novads> FilterNovadsList(FilterParameters filterParams)
         {
-            List<Novads> novadsList = _repository.GetAllNovads();
+            List<Novads> novadsList = _repository.GetAllNovadsLoadedReadOnly();
 
             foreach (var novads in novadsList)
             {
@@ -36,7 +36,7 @@ namespace NovitumHomeTask.Logic
         /// </summary>
         public IEnumerable<Pagasts> FilterPagastsList(int novadsId, FilterParameters filterParams)
         {
-            Novads givenNovads = _repository.GetAllNovads()
+            Novads givenNovads = _repository.GetAllNovadsLoadedReadOnly()
                 .FirstOrDefault(novads => novads.Id == novadsId);
 
             if (givenNovads == null)
@@ -58,7 +58,7 @@ namespace NovitumHomeTask.Logic
         /// </summary>
         public IEnumerable<Polygon1km> FilterPolygonList(int novadsId, int pagastsId, FilterParameters filterParams)
         {
-            Novads givenNovads = _repository.GetAllNovads()
+            Novads givenNovads = _repository.GetAllNovadsLoadedReadOnly()
                 .FirstOrDefault(novads => novads.Id == novadsId);
 
             if (givenNovads == null)

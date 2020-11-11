@@ -9,6 +9,7 @@ namespace NovitumHomeTask.Model
     /// <summary>
     /// Detailed polygon info
     /// </summary>
+    [Serializable]
     public class Polygon1kmInfo
     {
         /// <summary>

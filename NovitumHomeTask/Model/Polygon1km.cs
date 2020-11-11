@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using SharpKml.Dom;
 
@@ -11,6 +12,7 @@ namespace NovitumHomeTask.Model
     /// <summary>
     /// Polygon of 1km
     /// </summary>
+    [Serializable]
     public class Polygon1km
     {
         /// <summary>
@@ -26,6 +28,8 @@ namespace NovitumHomeTask.Model
         /// Not mapped as we would need to create a deeper structure with set Id keys for EF.
         /// </remarks>
         [NotMapped]
+        [JsonIgnore]
+        [field:NonSerialized]
         public Geometry CoordinatesPolygon { get; set; }
 
         /// <summary>

@@ -54,7 +54,7 @@ namespace NovitumHomeTask.Controllers
         }
 
         [HttpGet]
-        [Route("novadi/{novadsId}/pagasti/{pagastsId}/polygon")]
+        [Route("novadi/{novadsId}/pagasti/{pagastsId}/polygons")]
         public IActionResult FilterPolygonList([FromRoute] int novadsId, [FromRoute]int pagastsId, [FromQuery] FilterParameters filterParams)
         {
             if (filterParams.IsValid(out IEnumerable<string> errors))
